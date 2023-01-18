@@ -15,12 +15,12 @@ public class GatewayServiceApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(GatewayServiceApplication.class, args);
 	}
-	
+	//9olli chno lli makhddamch?
 	//@Bean
 	RouteLocator routeLocator (RouteLocatorBuilder builder){
 		return builder.routes()
 				.route((r)->r.path("/customers/**").uri("lb://CUSTOMER-SERVICE"))
-				.route((r)->r.path("/products/**").uri("lb://GATEWAY-SERVICE"))
+				.route((r)->r.path("/products/**").uri("lb://INVENTORY-SERVICE"))
 				.build();
 	}
 

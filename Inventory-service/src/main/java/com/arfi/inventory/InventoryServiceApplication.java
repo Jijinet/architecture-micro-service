@@ -17,6 +17,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.springframework.data.rest.core.config.Projection;
+import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
 
 @Entity @Table(name = "PRODUCTS") @Data @AllArgsConstructor @NoArgsConstructor @ToString
 class Product {
@@ -29,6 +31,12 @@ class Product {
 @RepositoryRestResource
 interface ProductRepository extends JpaRepository<Product, Long>{}
 
+@Projection(name = "product_credentions", types = Product.class)
+interface CustomerProjection {
+	public String getName();
+	public String getPrice();
+}
+
 @SpringBootApplication
 public class InventoryServiceApplication {
 
@@ -37,8 +45,9 @@ public class InventoryServiceApplication {
 	}
 
 	@Bean
-	CommandLineRunner start(ProductRepository productRepository) {
+	CommandLineRunner start(ProductRepository productRepository, RepositoryRestConfiguration restConfiguration) {
 		return args -> {
+			restConfiguration.exposeIdsFor(Product.class);
 			productRepository.save(new Product(null, "Galaxy A51", 3000));
 			productRepository.save(new Product(null, "MacBookPro", 13000));
 			productRepository.save(new Product(null, "Oraimo Free Pods 3", 300));
